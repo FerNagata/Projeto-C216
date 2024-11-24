@@ -1,0 +1,13 @@
+body {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande' !important;
+    background-color: #F7EEE1;
+    /* color: #333 !important; */
+    color: #F06060 !important;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-custom {
+    /* background-color: #2C4251; */
+    color: #F06060 !important;
+}
