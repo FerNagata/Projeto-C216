@@ -23,5 +23,5 @@ INSERT INTO "accommodation" ("category", "city", "address", "price_per_night", "
 INSERT INTO "accommodation" ("category", "city", "address", "price_per_night", "owner") VALUES ('cidade', 'São Paulo', 'Av. Brasil - 1234', 2.300, 'Brad Patt');
 INSERT INTO "accommodation" ("category", "city", "address", "price_per_night", "owner") VALUES ('beach', 'Salvador', 'Rua do Pelourinho - 1500', 900, 'Renato Aragão');
 
-INSERT INTO "booking" ("accommodation_id", "name", "total_price", "checkin", "checkout") VALUES (1, 'Kléberson Souza', 6.500, '2024-11-10 18:30:00', '2024-11-15 18:30:00');
-INSERT INTO "booking" ("accommodation_id", "name", "total_price", "checkin", "checkout") VALUES (2, 'João da Silva', 2.300, '2024-11-24 14:30:00', '2024-11-25 14:30:00');
+INSERT INTO "booking" ("accommodation_id", "name", "total_price", "checkin", "checkout") VALUES (1, 'Kléberson Souza', 6.500, '2024-11-10T18:30:00Z', '2024-11-15T18:30:00Z');
+INSERT INTO "booking" ("accommodation_id", "name", "total_price", "checkin", "checkout") VALUES (2, 'João da Silva', 2.300, '2024-11-24 14:30:00', '2024-11-25T14:30:00Z');
