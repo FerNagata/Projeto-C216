@@ -243,8 +243,8 @@ async def delete_booking(booking_id: int):
         await conn.close()
 
 @api.delete("/api/v1/bookings")
-async def resetar_jogos():
-    init_sql = os.getenv("INIT_SQL", "db/init.sql")
+async def reset_booking():
+    init_sql = os.getenv("INIT_SQL", "database/init-db/init.sql")
     conn = await get_database()
     try:
         # Read SQL file contents
