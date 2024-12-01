@@ -4,7 +4,7 @@ from typing import List, Optional
 import time
 import asyncpg
 import os
-import datetime
+from datetime import datetime
 
 # ----------------- Accommodation -----------------
 class AccommodationBase(BaseModel):
@@ -26,8 +26,8 @@ class AccommodationUpdate(BaseModel):
 class BookingBase(BaseModel):
     accommodation_id: int
     name: str
-    checkin: str  
-    checkout: str
+    checkin: datetime 
+    checkout: datetime
 class Booking(BookingBase):
     id: int
     total_price: float
@@ -35,5 +35,5 @@ class BookingUpdate(BaseModel):
     accommodation_id: Optional[int]
     name: Optional[str]
     total_price: Optional[float]
-    checkin: Optional[str]
-    checkout: Optional[str]
+    checkin: Optional[datetime]
+    checkout: Optional[datetime]
