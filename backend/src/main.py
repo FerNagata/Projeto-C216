@@ -136,6 +136,20 @@ async def delete_accommodation(accommodation_id: int):
     finally:
         await conn.close()
 
+@api.delete("/api/v1/accomodations")
+async def resetar_jogos():
+    init_sql = os.getenv("INIT_SQL", "db/init.sql")
+    conn = await get_database()
+    try:
+        # Read SQL file contents
+        with open(init_sql, 'r') as file:
+            sql_commands = file.read()
+        # Execute SQL commands
+        await conn.execute(sql_commands)
+        return {"message": "Banco de dados limpo com sucesso!"}
+    finally:
+        await conn.close()
+
 # ----------------- Booking -----------------
 
 # 5. Adding a new booking
@@ -239,6 +253,20 @@ async def delete_booking(booking_id: int):
         if result == "DELETE 0":
             raise HTTPException(status_code=404, detail="Reserva não encontrada.")
         return {"message": "Reserva cancelada com sucesso!"}
+    finally:
+        await conn.close()
+
+@api.delete("/api/v1/bookings")
+async def resetar_jogos():
+    init_sql = os.getenv("INIT_SQL", "db/init.sql")
+    conn = await get_database()
+    try:
+        # Read SQL file contents
+        with open(init_sql, 'r') as file:
+            sql_commands = file.read()
+        # Execute SQL commands
+        await conn.execute(sql_commands)
+        return {"message": "Banco de dados limpo com sucesso!"}
     finally:
         await conn.close()
 
