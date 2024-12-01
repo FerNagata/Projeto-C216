@@ -16,6 +16,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: houseReservation
+    volumes:
+      - ./dataPostgres:/var/lib/postgresql/data
+      - ./backend/src/database/init-db/init.sql:/docker-entrypoint-initdb.d/init.sql
   
   frontend:
     build: ./frontend
