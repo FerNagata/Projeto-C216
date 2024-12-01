@@ -11,7 +11,6 @@ class AccommodationBase(BaseModel):
     category: str
     city: str
     address: str
-    idioma: str
     price_per_night: float
     owner: str
 class Accommodation(AccommodationBase):

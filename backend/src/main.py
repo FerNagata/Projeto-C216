@@ -5,12 +5,11 @@ from fastapi import FastAPI
 import uvicorn
 import time
 from models import AccommodationBase, Accommodation, AccommodationUpdate, BookingBase, Booking, BookingUpdate
-import src.database.repository as repository 
 from typing import List
 import os, asyncpg
 
 async def get_database():
-    DATABASE_URL = os.environ.get("PGURL", "postgres://postgres:postgres@db:5432/jogos") 
+    DATABASE_URL = os.environ.get("PGURL", "postgres://postgres:postgres@db:5432/houseReservation") 
     return await asyncpg.connect(DATABASE_URL)
 
 api = FastAPI()
@@ -31,48 +30,11 @@ async def log_requests(request: Request, call_next):
     process_time = time.time() - start_time
     print(f"Path: {request.url.path}, Method: {request.method}, Process Time: {process_time:.4f}s")
     return response
-
-@api.get("/accommodation/get-all", status_code=status.HTTP_200_OK, response_description="Get all accommodations")
-def get_all_accommodation():
-    try:
-        response = repository.get_all_accomodation()
-
-        return response
-        
-    except Exception as e:
-        print("Error: ${e}")
-        raise HTTPException(status_code=500)
     
 # ----------------- Accommodation -----------------
 
-# 1. Adding a new accommodation
-@api.post("/api/v1/accommodations", status_code=201)
-async def add_accommodation(accommodation: AccommodationBase):
-    conn = await get_database()
-    # Verify if the accommodation already exists
-    if await get_all_accommodation(accommodation.category, accommodation.city, accommodation.address, conn):
-        raise HTTPException(status_code=400, detail="A acomodação já existe.")
-    try:
-        query = """
-            INSERT INTO accommodation (category, city, address, price_per_night, owner)
-            VALUES ($1, $2, $3, $4, $5)
-        """
-        async with conn.transaction():
-            await conn.execute(
-                query, 
-                accommodation.category, 
-                accommodation.city, 
-                accommodation.address, 
-                accommodation.price_per_night, 
-                accommodation.owner
-            )
-        return {"message": "Acomodação adicionada com sucesso!"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Falha ao adicionar a acomodação: {str(e)}")
-    finally:
-        await conn.close()
 
-# 2. Listing all accommodations
+# 1. Listing all accommodations
 @api.get("/api/v1/accommodations", response_model=List[Accommodation])
 async def list_accommodations():
     conn = await get_database()
@@ -81,6 +43,30 @@ async def list_accommodations():
         rows = await conn.fetch(query)
         accommodations = [dict(row) for row in rows]
         return accommodations
+    finally:
+        await conn.close()
+
+# 2. Adding a new accommodation
+async def exits_accommodation(address: str, owner: str, conn: asyncpg.Connection):
+    try:
+        query = "SELECT * FROM accommodation WHERE LOWER(owner) = LOWER($1) AND LOWER(owner) = LOWER($2)"
+        result = await conn.fetchval(query, address, owner)
+        return result is not None
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Falha ao verificar se a acomodação existe: {str(e)}")
+
+@api.post("/api/v1/accommodations", status_code=201)
+async def adding_accommodation(accommodation: AccommodationBase):
+    conn = await get_database()
+    if await exits_accommodation(accommodation.address, accommodation.owner, conn):
+        raise HTTPException(status_code=400, detail="A Acomodação já existe.")
+    try:
+        query = "INSERT INTO accommodation (category, city, address, price_per_night, owner) VALUES ($1, $2, $3, $4, $5)"
+        async with conn.transaction():
+            result = await conn.execute(query, accommodation.category, accommodation.city, accommodation.address, accommodation.price_per_night, accommodation.owner)
+            return {"message": "Acomodação adicionada com sucesso!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Falha ao adicionar a acomodação: {str(e)}")
     finally:
         await conn.close()
 
@@ -137,8 +123,8 @@ async def delete_accommodation(accommodation_id: int):
         await conn.close()
 
 @api.delete("/api/v1/accomodations")
-async def resetar_jogos():
-    init_sql = os.getenv("INIT_SQL", "db/init.sql")
+async def reset_accommodation():
+    init_sql = os.getenv("INIT_SQL", "src/database/init-db/init.sql")
     conn = await get_database()
     try:
         # Read SQL file contents
