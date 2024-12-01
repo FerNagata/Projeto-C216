@@ -124,7 +124,7 @@ async def delete_accommodation(accommodation_id: int):
 
 @api.delete("/api/v1/accomodations")
 async def reset_accommodation():
-    init_sql = os.getenv("INIT_SQL", "src/database/init-db/init.sql")
+    init_sql = os.getenv("INIT_SQL", "database/init-db/init.sql")
     conn = await get_database()
     try:
         # Read SQL file contents
