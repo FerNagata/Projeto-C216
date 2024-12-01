@@ -1,4 +1,3 @@
-from fastapi import status
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
@@ -7,6 +6,7 @@ import time
 from models import AccommodationBase, Accommodation, AccommodationUpdate, BookingBase, Booking, BookingUpdate
 from typing import List
 import os, asyncpg
+import pytz
 
 async def get_database():
     DATABASE_URL = os.environ.get("PGURL", "postgres://postgres:postgres@db:5432/houseReservation") 
@@ -33,6 +33,32 @@ async def log_requests(request: Request, call_next):
     
 # ----------------- Accommodation -----------------
 
+# 1. Adding a new accommodation
+@api.post("/api/v1/accommodations", status_code=201)
+async def add_accommodation(accommodation: AccommodationBase):
+    conn = await get_database()
+    # Verify if the accommodation already exists
+    # if await get_all_accommodation(accommodation.category, accommodation.city, accommodation.address, conn):
+    #     raise HTTPException(status_code=400, detail="A acomodação já existe.")
+    try:
+        query = """
+            INSERT INTO accommodation (category, city, address, price_per_night, owner)
+            VALUES ($1, $2, $3, $4, $5)
+        """
+        async with conn.transaction():
+            await conn.execute(
+                query, 
+                accommodation.category, 
+                accommodation.city, 
+                accommodation.address, 
+                accommodation.price_per_night, 
+                accommodation.owner
+            )
+        return {"message": "Acomodação adicionada com sucesso!"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Falha ao adicionar a acomodação: {str(e)}")
+    finally:
+        await conn.close()
 
 # 1. Listing all accommodations
 @api.get("/api/v1/accommodations", response_model=List[Accommodation])
@@ -136,6 +162,37 @@ async def reset_accommodation():
     finally:
         await conn.close()
 
+# 5. Listing distinct categories
+@api.get("/api/v1/accommodations/categories", response_model=List[str])
+async def get_distinct_categories():
+    conn = await get_database()
+    try:
+        # Consulta para pegar categorias distintas
+        query = "SELECT DISTINCT category FROM accommodation"
+        rows = await conn.fetch(query)
+        
+        # Extrair apenas as categorias
+        categories = [row["category"] for row in rows]
+        return categories
+    finally:
+        await conn.close()
+
+# 8. Endpoint para listar acomodações de uma categoria específica
+@api.get("/api/v1/accommodations/category", response_model=List[Accommodation])
+async def list_accommodations_by_category(category: str):
+    conn = await get_database()
+    try:
+        # Consulta para pegar as acomodações pela categoria
+        query = "SELECT * FROM accommodation WHERE category = $1"
+        rows = await conn.fetch(query, category)  # $1 é o parâmetro da consulta
+        accommodations = [dict(row) for row in rows]
+        
+        if not accommodations:
+            raise HTTPException(status_code=404, detail="No accommodations found for this category")
+        
+        return accommodations
+    finally:
+        await conn.close()
 # ----------------- Booking -----------------
 
 # 5. Adding a new booking
@@ -162,14 +219,32 @@ async def calculate_total_price(conn, accommodation_id: int, checkin: str, check
 async def add_booking(booking: BookingBase):
     conn = await get_database()
     try:
-        # Validate datas
-        checkin = time.strptime(booking.checkin, "%Y-%m-%d %H:%M:%S")
-        checkout = time.strptime(booking.checkout, "%Y-%m-%d %H:%M:%S")
-        if checkout <= checkin:
+        if booking.checkout <= booking.checkin:
             raise HTTPException(status_code=400, detail="Checkout deve ser posterior ao checkin.")
         
+        # Verificação de disponibilidade
+        query_check_availability = """
+            SELECT 1
+            FROM booking
+            WHERE accommodation_id = $1
+            AND (
+                (checkin <= $2 AND checkout > $2)  -- Caso a data de checkin da nova reserva sobreponha
+                OR
+                (checkin < $3 AND checkout >= $3)  -- Caso a data de checkout da nova reserva sobreponha
+                OR
+                (checkin >= $2 AND checkout <= $3) -- Caso a nova reserva sobreponha o período inteiro
+            )
+            LIMIT 1;
+        """
+        # Verificar se já existe uma reserva no período solicitado
+        existing_booking = await conn.fetchval(query_check_availability, 
+                                                booking.accommodation_id, booking.checkin, booking.checkout)
+        
+        if existing_booking:
+            raise HTTPException(status_code=400, detail="As datas solicitadas estão indisponíveis para esta acomodação.")
+
         # Calculate total price
-        total_price = await calculate_total_price(conn, booking.accommodation_id, checkin, checkout)
+        total_price = await calculate_total_price(conn, booking.accommodation_id, booking.checkin, booking.checkout)
 
         query = """
             INSERT INTO booking (accommodation_id, name, total_price, checkin, checkout)
