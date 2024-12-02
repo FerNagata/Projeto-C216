@@ -32,8 +32,6 @@ class Booking(BookingBase):
     id: int
     total_price: float
 class BookingUpdate(BaseModel):
-    accommodation_id: Optional[int]
     name: Optional[str]
-    total_price: Optional[float]
     checkin: Optional[datetime]
     checkout: Optional[datetime]
