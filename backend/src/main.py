@@ -96,7 +96,21 @@ async def adding_accommodation(accommodation: AccommodationBase):
     finally:
         await conn.close()
 
-# 3. Updating an accommodation
+# 3. Listing an accommodation by ID
+@api.get("/api/v1/accommodations/{accommodation_id}")
+async def listing_accommodation_id(accommodation_id: int):
+    conn = await get_database()
+    try:
+        # Buscar o jogo por ID
+        query = "SELECT * FROM accommodation WHERE id = $1"
+        accommodation = await conn.fetchrow(query, accommodation_id)
+        if accommodation is None:
+            raise HTTPException(status_code=404, detail="Acomodação não encontradoa.")
+        return dict(accommodation)
+    finally:
+        await conn.close()
+
+# 4. Updating an accommodation
 @api.patch("/api/v1/accommodations/{accommodation_id}")
 async def update_accommodation(accommodation_id: int, accommodation_update: AccommodationUpdate):
     conn = await get_database()
@@ -130,7 +144,7 @@ async def update_accommodation(accommodation_id: int, accommodation_update: Acco
     finally:
         await conn.close()
 
-# 4. Remove an accommodation
+# 5. Remove an accommodation
 @api.delete("/api/v1/accommodations/{accommodation_id}")
 async def delete_accommodation(accommodation_id: int):
     conn = await get_database()
@@ -162,7 +176,7 @@ async def reset_accommodation():
     finally:
         await conn.close()
 
-# 5. Listing distinct categories
+# 6. Listing distinct categories
 @api.get("/api/v1/accommodations/categories", response_model=List[str])
 async def get_distinct_categories():
     conn = await get_database()
@@ -177,7 +191,7 @@ async def get_distinct_categories():
     finally:
         await conn.close()
 
-# 8. Endpoint para listar acomodações de uma categoria específica
+# 7. Listing accommodations by a specific category
 @api.get("/api/v1/accommodations/category", response_model=List[Accommodation])
 async def list_accommodations_by_category(category: str):
     conn = await get_database()
@@ -206,6 +220,21 @@ async def list_bookings():
         return bookings
     finally:
         await conn.close()
+
+# 2. Listing a booking by ID
+@api.get("/api/v1/bookings/{booking_id}")
+async def listing_booking_id(booking_id: int):
+    conn = await get_database()
+    try:
+        # Buscar a reserva por ID
+        query = "SELECT * FROM booking WHERE id = $1"
+        booking = await conn.fetchrow(query, booking_id)
+        if booking is None:
+            raise HTTPException(status_code=404, detail="Reserva não encontrada.")
+        return dict(booking)
+    finally:
+        await conn.close()
+
 
 # 2. Adding a new booking
 async def calculate_total_price(conn, accommodation_id: int, checkin: str, checkout: str) -> float:
