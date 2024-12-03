@@ -96,7 +96,21 @@ async def adding_accommodation(accommodation: AccommodationBase):
     finally:
         await conn.close()
 
-# 3. Updating an accommodation
+# 3. Listing an accommodation by ID
+@api.get("/api/v1/accommodations/{accommodation_id}")
+async def listing_accommodation_id(accommodation_id: int):
+    conn = await get_database()
+    try:
+        # Buscar o jogo por ID
+        query = "SELECT * FROM accommodation WHERE id = $1"
+        accommodation = await conn.fetchrow(query, accommodation_id)
+        if accommodation is None:
+            raise HTTPException(status_code=404, detail="Acomodação não encontradoa.")
+        return dict(accommodation)
+    finally:
+        await conn.close()
+
+# 4. Updating an accommodation
 @api.patch("/api/v1/accommodations/{accommodation_id}")
 async def update_accommodation(accommodation_id: int, accommodation_update: AccommodationUpdate):
     conn = await get_database()
@@ -130,7 +144,7 @@ async def update_accommodation(accommodation_id: int, accommodation_update: Acco
     finally:
         await conn.close()
 
-# 4. Remove an accommodation
+# 5. Remove an accommodation
 @api.delete("/api/v1/accommodations/{accommodation_id}")
 async def delete_accommodation(accommodation_id: int):
     conn = await get_database()
@@ -150,7 +164,7 @@ async def delete_accommodation(accommodation_id: int):
 
 @api.delete("/api/v1/accomodations")
 async def reset_accommodation():
-    init_sql = os.getenv("INIT_SQL", "src/database/init-db/init.sql")
+    init_sql = os.getenv("INIT_SQL", "database/init-db/init.sql")
     conn = await get_database()
     try:
         # Read SQL file contents
@@ -162,8 +176,8 @@ async def reset_accommodation():
     finally:
         await conn.close()
 
-# 5. Listing distinct categories
-@api.get("/api/v1/accommodations/categories", response_model=List[str])
+# 6. Listing distinct categories
+@api.get("/api/v1/accommodations/categories/all", response_model=List[str])
 async def get_distinct_categories():
     conn = await get_database()
     try:
@@ -177,8 +191,8 @@ async def get_distinct_categories():
     finally:
         await conn.close()
 
-# 8. Endpoint para listar acomodações de uma categoria específica
-@api.get("/api/v1/accommodations/category", response_model=List[Accommodation])
+# 7. Listing accommodations by a specific category
+@api.get("/api/v1/accommodations/category/{category}", response_model=List[Accommodation])
 async def list_accommodations_by_category(category: str):
     conn = await get_database()
     try:
@@ -194,8 +208,35 @@ async def list_accommodations_by_category(category: str):
     finally:
         await conn.close()
 # ----------------- Booking -----------------
+        
+# 1. List all bookings
+@api.get("/api/v1/bookings", response_model=List[Booking])
+async def list_bookings():
+    conn = await get_database()
+    try:
+        query = "SELECT * FROM booking"
+        rows = await conn.fetch(query)
+        bookings = [dict(row) for row in rows]
+        return bookings
+    finally:
+        await conn.close()
 
-# 5. Adding a new booking
+# 2. Listing a booking by ID
+@api.get("/api/v1/bookings/{booking_id}")
+async def listing_booking_id(booking_id: int):
+    conn = await get_database()
+    try:
+        # Buscar a reserva por ID
+        query = "SELECT * FROM booking WHERE id = $1"
+        booking = await conn.fetchrow(query, booking_id)
+        if booking is None:
+            raise HTTPException(status_code=404, detail="Reserva não encontrada.")
+        return dict(booking)
+    finally:
+        await conn.close()
+
+
+# 2. Adding a new booking
 async def calculate_total_price(conn, accommodation_id: int, checkin: str, checkout: str) -> float:
     # Buscar o preço por noite da acomodação
     query = "SELECT price_per_night FROM accommodation WHERE id = $1"
@@ -255,19 +296,7 @@ async def add_booking(booking: BookingBase):
     finally:
         await conn.close()
 
-# 6. List all bookings
-@api.get("/api/v1/bookings", response_model=List[Booking])
-async def list_bookings():
-    conn = await get_database()
-    try:
-        query = "SELECT * FROM booking"
-        rows = await conn.fetch(query)
-        bookings = [dict(row) for row in rows]
-        return bookings
-    finally:
-        await conn.close()
-
-# 6. Update a booking
+# 3. Update a booking
 @api.patch("/api/v1/bookings/{booking_id}")
 async def update_booking(booking_id: int, booking_update: BookingUpdate):
     conn = await get_database()
@@ -277,23 +306,25 @@ async def update_booking(booking_id: int, booking_update: BookingUpdate):
         booking = await conn.fetchrow(query, booking_id)
         if not booking:
             raise HTTPException(status_code=404, detail="Reserva não encontrada.")
+        
+        accommodation_id = booking['accommodation_id']
 
+        total_price = await calculate_total_price(conn, accommodation_id, booking_update.checkin, booking_update.checkout)
+        
         # Atualizar apenas os campos fornecidos
         update_query = """
             UPDATE booking
             SET 
-                accommodation_id = COALESCE($1, accommodation_id),
-                name = COALESCE($2, name),
-                total_price = COALESCE($3, total_price),
-                checkin = COALESCE($4, checkin),
-                checkout = COALESCE($5, checkout)
-            WHERE id = $6
+                name = COALESCE($1, name),
+                total_price = COALESCE($2, total_price),
+                checkin = COALESCE($3, checkin),
+                checkout = COALESCE($4, checkout)
+            WHERE id = $5
         """
         await conn.execute(
             update_query,
-            booking_update.accommodation_id,
             booking_update.name,
-            booking_update.total_price,
+            total_price,
             booking_update.checkin,
             booking_update.checkout,
             booking_id
@@ -304,7 +335,7 @@ async def update_booking(booking_id: int, booking_update: BookingUpdate):
     finally:
         await conn.close()
 
-# 7. Delete a booking  
+# 4. Delete a booking  
 @api.delete("/api/v1/bookings/{booking_id}")
 async def delete_booking(booking_id: int):
     conn = await get_database()
@@ -318,8 +349,8 @@ async def delete_booking(booking_id: int):
         await conn.close()
 
 @api.delete("/api/v1/bookings")
-async def resetar_jogos():
-    init_sql = os.getenv("INIT_SQL", "db/init.sql")
+async def reset_booking():
+    init_sql = os.getenv("INIT_SQL", "database/init-db/init.sql")
     conn = await get_database()
     try:
         # Read SQL file contents
