@@ -11,3 +11,71 @@ body {
     /* background-color: #2C4251; */
     color: #F06060 !important;
 }
+
+.container-card{
+    /* display: flex;          */
+    /* gap: 20px;              */
+    padding-bottom: 20px;         
+    padding-top: 20px;         
+    padding-right: 5px !important;         
+    padding-left: 5px !important;         
+    justify-content: center;
+}
+
+.card:hover{
+    cursor: pointer;
+}
+
+.title-page{
+    padding: 20px 0px 0px 20px; /*top - right - bottom - left*/ 
+}
+
+.add-place-container{
+    padding: 0 20px 20px 20px;
+}
+
+.btn{
+    background-color: #F06060 !important;
+    border-color: none;
+    color: #F7EEE1 !important;
+    /* margin-right: 5px; */
+    padding: 4px !important;
+}
+
+.floating-button {
+    /* background-color: #F06060 !important; */
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%; /* Torna o botão circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra */
+    border: none; /* Remove a borda padrão */
+    text-decoration: none; /* Remove o sublinhado */
+}
+
+.floating-button i {
+    color: #F06060 !important;
+    padding: 0px;
+    margin: 0px;
+    font-size: 32px; /* Tamanho do ícone */
+}
+
+.table-show-booking{
+    flex: 1; 
+    margin: 2% 5%;              
+    padding: 10px;         
+    /* background-color: #F7EEE1; */
+    /* color: #F7EEE1; */
+    /* border-radius: 8px;     */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+    /* text-align: center; */
+}
+/* 
+.modal-header-display{
+    flex: 1;
+} */
