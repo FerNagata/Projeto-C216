@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h2 class="title-page">Atualizar dados da locação:</h2>
+    <div class="add-place-container">
+        <form action="/update/{{accommodation.id}}" method="POST">
+            <label for="category" class="form-label">Categoria:</label><br>
+            <input type="text" id="category" name="category" class="form-control" value="{{ accommodation.category }}"><br>
+            <label for="city" class="form-label">Cidade:</label><br>
+            <input type="text" id="city" name="city" class="form-control" value="{{ accommodation.city }}"><br>
+            <label for="address" class="form-label">Endereço:</label><br>
+            <input type="text" id="address" name="address" class="form-control" value="{{ accommodation.address }}"><br>
+            <label for="price_per_night" class="form-label">Preço por noite:</label><br>
+            <input type="text" id="price_per_night" name="price_per_night" class="form-control" value="{{ accommodation.price_per_night }}"><br>
+            <label for="owner" class="form-label">Dono:</label><br>
+            <input type="text" id="owner" name="owner" class="form-control" value="{{ accommodation.owner }}"><br>
+            <div class="btn d-flex justify-content-center">
+                <input type="submit" value="Atualizar" class="btn w-100">
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

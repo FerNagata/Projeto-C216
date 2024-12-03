@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <h2 class="title-page">Reservas realizadas:</h2>
+    <div class="table-show-booking">
+        {% if booking %}
+        <table border="1" class="table">
+            <thead>
+                <tr>
+                    <th>Cidade</th>
+                    <th>Nome</th>
+                    <th>Valor total</th>
+                    <th>Checking</th>
+                    <th>Checkout</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserve in booking %}
+                <tr>
+                    <td>{{ reserve.city }}</td>
+                    <td>{{ reserve.name }}</td>
+                    <td>{{ reserve.total_price }}</td>
+                    <td>{{ reserve.checkin }}</td>
+                    <td>{{ reserve.checkout }}</td>
+                    <td class="d-flex">
+                        <!-- <form action="/update/{{ reserve.id }}" method="GET"> -->
+                            <button type="submit" data-bs-toggle="modal" 
+                            data-bs-target="#bookingModal" 
+                            onclick="updateModal('{{ reserve.id }}', '{{ reserve.city }}', '{{ reserve.name }}', '{{ reserve.total_price }}', '{{ reserve.checkin }}', '{{ reserve.checkout }}')">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        <!-- </form> -->
+                        <form action="/booking/delete/{{ reserve.id }}" method="POST">
+                            <button type="submit">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-center">Nenhuma reserva encontrado.</p>
+        {% endif %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Atualizar reserva:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 id="modalCity"></h5>
+                    <div id="modalPrice"></div>
+                    <div id="modalName"></div>
+                    <div id="modalCheckin"></div>
+                    <div id="modalCheckout"></div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal" >Atualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function updateModal(id, city, name, total_price, checkin, checkout) {
+
+            // Atualiza o conteúdo do modal com os dados do card clicado
+            document.getElementById('modalCity').innerText = city;
+            document.getElementById('modalName').innerText = name;
+            document.getElementById('modalPrice').innerText = `R$${total_price}`;
+            document.getElementById('modalCheckin').innerText = `Data do checkin: ${checkin}`;
+            document.getElementById('modalCheckout').innerText = `Data do checkout: ${checkout}`;
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
