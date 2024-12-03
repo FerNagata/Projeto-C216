@@ -177,7 +177,7 @@ async def reset_accommodation():
         await conn.close()
 
 # 6. Listing distinct categories
-@api.get("/api/v1/accommodations/categories", response_model=List[str])
+@api.get("/api/v1/accommodations/categories/all", response_model=List[str])
 async def get_distinct_categories():
     conn = await get_database()
     try:
@@ -192,7 +192,7 @@ async def get_distinct_categories():
         await conn.close()
 
 # 7. Listing accommodations by a specific category
-@api.get("/api/v1/accommodations/category", response_model=List[Accommodation])
+@api.get("/api/v1/accommodations/category/{category}", response_model=List[Accommodation])
 async def list_accommodations_by_category(category: str):
     conn = await get_database()
     try:
