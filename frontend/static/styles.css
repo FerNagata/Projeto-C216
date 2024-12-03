@@ -1,13 +1,78 @@
 body {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande' !important;
     background-color: #F7EEE1;
-    /* color: #333 !important; */
     color: #F06060 !important;
     margin: 0;
     padding: 0;
 }
 
 .navbar-custom {
-    /* background-color: #2C4251; */
     color: #F06060 !important;
+}
+
+.container-card{
+    padding-bottom: 20px;         
+    padding-top: 20px;         
+    padding-right: 5px !important;         
+    padding-left: 5px !important;         
+    justify-content: center;
+}
+
+.card:hover{
+    cursor: pointer;
+}
+
+.title-page{
+    padding: 20px 20px 0px 20px; /*top - right - bottom - left*/ 
+}
+
+.filter-container{
+    display: flex;
+    padding: 0px 20px 0px 30px;
+    align-items: center !important;
+}
+
+.add-place-container{
+    padding: 0 20px 20px 20px;
+}
+
+.btn{
+    background-color: #F06060 !important;
+    border-color: none;
+    color: #F7EEE1 !important;
+    padding: 4px !important;
+}
+
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+    text-decoration: none;
+}
+
+.floating-button i {
+    color: #F06060 !important;
+    padding: 0px;
+    margin: 0px;
+    font-size: 32px;
+}
+
+.table-show-booking{
+    flex: 1; 
+    margin: 2% 5%;              
+    padding: 10px;
+}
+
+.icon-buttom{
+    background: none;
+    border: none;
+    color: #F06060;
 }

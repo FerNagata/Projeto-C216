@@ -25,6 +25,7 @@ class AccommodationUpdate(BaseModel):
 # ----------------- Booking -----------------
 class BookingBase(BaseModel):
     accommodation_id: int
+    city: str
     name: str
     checkin: datetime 
     checkout: datetime

@@ -12,50 +12,25 @@
       <div class="collapse navbar-collapse" id="navbarScroll">
         <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link {% if page == 'home' %}active{% endif %}" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link {% if page == 'booking' %}active{% endif %}" aria-current="page" href="/booking">Reservas</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Link
+              Reset
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li>
+                    <a class="dropdown-item" href="/accommodation/reset-database">Reset Dados das Acomodações</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="/booking/reset-database">Reset Dados das Reservas</a>
+                  </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Link</a>
-          </li>
         </ul>
-        <!-- <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form> -->
       </div>
     </div>
   </nav>
-
-<!-- <nav class="navbar navbar-expand-lg navbar-color">
-    <div class="container-fluid">
-        <a class="navbar-brand navbar-color" href="/">
-        <i class="bi bi-house"></i>
-        Gerenciamento de Reservas</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <svg style="color: #FBB018;" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M3 18v-2h18v2zm0-5v-2h18v2zm0-5V6h18v2z"/></svg>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-link {% if page == 'home' %}active{% endif %}" href="/">Home</a>
-            <a class="nav-link {% if page == 'register' %}active{% endif %}" href="/register">Cadastrar Produto</a>
-            <a class="nav-link {% if page == 'get_all' %}active{% endif %}" href="/stock">Mostrar Estoque</a>
-            <a class="nav-link {% if page == 'sales_made' %}active{% endif %}" href="/sales">Mostrar vendas realizadas</a>
-            <a class="nav-link" href="/reset-database">Resetar Banco de Dados</a>
-        </div>
-    </div>
-    </div>
-</nav> -->
