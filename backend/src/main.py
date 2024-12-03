@@ -6,7 +6,6 @@ import time
 from models import AccommodationBase, Accommodation, AccommodationUpdate, BookingBase, Booking, BookingUpdate
 from typing import List
 import os, asyncpg
-import pytz
 
 async def get_database():
     DATABASE_URL = os.environ.get("PGURL", "postgres://postgres:postgres@db:5432/houseReservation") 
