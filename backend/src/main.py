@@ -162,7 +162,7 @@ async def delete_accommodation(accommodation_id: int):
     finally:
         await conn.close()
 
-@api.delete("/api/v1/accomodations")
+@api.delete("/api/v1/accommodations")
 async def reset_accommodation():
     init_sql = os.getenv("INIT_SQL", "database/init-db/init.sql")
     conn = await get_database()
@@ -288,10 +288,10 @@ async def add_booking(booking: BookingBase):
         total_price = await calculate_total_price(conn, booking.accommodation_id, booking.checkin, booking.checkout)
 
         query = """
-            INSERT INTO booking (accommodation_id, name, total_price, checkin, checkout)
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO booking (accommodation_id, city, name, total_price, checkin, checkout)
+            VALUES ($1, $2, $3, $4, $5, $6)
         """
-        await conn.execute(query, booking.accommodation_id, booking.name, total_price, booking.checkin, booking.checkout)
+        await conn.execute(query, booking.accommodation_id, booking.city, booking.name, total_price, booking.checkin, booking.checkout)
         return {"message": "Reserva criada com sucesso!", "total_price": total_price}
     finally:
         await conn.close()

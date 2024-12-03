@@ -25,6 +25,7 @@ class AccommodationUpdate(BaseModel):
 # ----------------- Booking -----------------
 class BookingBase(BaseModel):
     accommodation_id: int
+    city: str
     name: str
     checkin: datetime 
     checkout: datetime
@@ -33,6 +34,5 @@ class Booking(BookingBase):
     total_price: float
 class BookingUpdate(BaseModel):
     name: Optional[str]
-    total_price: Optional[float]
     checkin: Optional[datetime]
     checkout: Optional[datetime]
