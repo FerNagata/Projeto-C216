@@ -59,7 +59,7 @@ async def add_accommodation(accommodation: AccommodationBase):
     finally:
         await conn.close()
 
-# 1. Listing all accommodations
+# 2. Listing all accommodations
 @api.get("/api/v1/accommodations", response_model=List[Accommodation])
 async def list_accommodations():
     conn = await get_database()
@@ -71,7 +71,7 @@ async def list_accommodations():
     finally:
         await conn.close()
 
-# 2. Adding a new accommodation
+# 3. Adding a new accommodation
 async def exits_accommodation(address: str, owner: str, conn: asyncpg.Connection):
     try:
         query = "SELECT * FROM accommodation WHERE LOWER(owner) = LOWER($1) AND LOWER(owner) = LOWER($2)"
@@ -95,12 +95,11 @@ async def adding_accommodation(accommodation: AccommodationBase):
     finally:
         await conn.close()
 
-# 3. Listing an accommodation by ID
+# 4. Listing an accommodation by ID
 @api.get("/api/v1/accommodations/{accommodation_id}")
 async def listing_accommodation_id(accommodation_id: int):
     conn = await get_database()
     try:
-        # Buscar o jogo por ID
         query = "SELECT * FROM accommodation WHERE id = $1"
         accommodation = await conn.fetchrow(query, accommodation_id)
         if accommodation is None:
@@ -109,7 +108,7 @@ async def listing_accommodation_id(accommodation_id: int):
     finally:
         await conn.close()
 
-# 4. Updating an accommodation
+# 5. Updating an accommodation
 @api.patch("/api/v1/accommodations/{accommodation_id}")
 async def update_accommodation(accommodation_id: int, accommodation_update: AccommodationUpdate):
     conn = await get_database()
@@ -143,7 +142,7 @@ async def update_accommodation(accommodation_id: int, accommodation_update: Acco
     finally:
         await conn.close()
 
-# 5. Remove an accommodation
+# 6. Remove an accommodation
 @api.delete("/api/v1/accommodations/{accommodation_id}")
 async def delete_accommodation(accommodation_id: int):
     conn = await get_database()
@@ -161,6 +160,7 @@ async def delete_accommodation(accommodation_id: int):
     finally:
         await conn.close()
 
+# 7. Reset the accommodation table
 @api.delete("/api/v1/accommodations")
 async def reset_accommodation():
     init_sql = os.getenv("INIT_SQL", "database/init-db/init.sql")
@@ -175,27 +175,24 @@ async def reset_accommodation():
     finally:
         await conn.close()
 
-# 6. Listing distinct categories
+# 8. Listing distinct categories
 @api.get("/api/v1/accommodations/categories/all", response_model=List[str])
 async def get_distinct_categories():
     conn = await get_database()
     try:
-        # Consulta para pegar categorias distintas
         query = "SELECT DISTINCT category FROM accommodation"
         rows = await conn.fetch(query)
         
-        # Extrair apenas as categorias
         categories = [row["category"] for row in rows]
         return categories
     finally:
         await conn.close()
 
-# 7. Listing accommodations by a specific category
+# 9. Listing accommodations by a specific category
 @api.get("/api/v1/accommodations/category/{category}", response_model=List[Accommodation])
 async def list_accommodations_by_category(category: str):
     conn = await get_database()
     try:
-        # Consulta para pegar as acomodações pela categoria
         query = "SELECT * FROM accommodation WHERE category = $1"
         rows = await conn.fetch(query, category)  # $1 é o parâmetro da consulta
         accommodations = [dict(row) for row in rows]
@@ -235,9 +232,8 @@ async def listing_booking_id(booking_id: int):
         await conn.close()
 
 
-# 2. Adding a new booking
+# 3. Adding a new booking
 async def calculate_total_price(conn, accommodation_id: int, checkin: str, checkout: str) -> float:
-    # Buscar o preço por noite da acomodação
     query = "SELECT price_per_night FROM accommodation WHERE id = $1"
     accommodation = await conn.fetchrow(query, accommodation_id)
 
@@ -295,12 +291,12 @@ async def add_booking(booking: BookingBase):
     finally:
         await conn.close()
 
-# 3. Update a booking
+# 4. Update a booking
 @api.patch("/api/v1/bookings/{booking_id}")
 async def update_booking(booking_id: int, booking_update: BookingUpdate):
     conn = await get_database()
     try:
-        # Verificar se a reserva existe
+        # Verify if the booking exists
         query = "SELECT * FROM booking WHERE id = $1"
         booking = await conn.fetchrow(query, booking_id)
         if not booking:
@@ -310,7 +306,7 @@ async def update_booking(booking_id: int, booking_update: BookingUpdate):
 
         total_price = await calculate_total_price(conn, accommodation_id, booking_update.checkin, booking_update.checkout)
         
-        # Atualizar apenas os campos fornecidos
+        # Updating the booking
         update_query = """
             UPDATE booking
             SET 
@@ -334,7 +330,7 @@ async def update_booking(booking_id: int, booking_update: BookingUpdate):
     finally:
         await conn.close()
 
-# 4. Delete a booking  
+# 5. Delete a booking  
 @api.delete("/api/v1/bookings/{booking_id}")
 async def delete_booking(booking_id: int):
     conn = await get_database()
@@ -347,6 +343,7 @@ async def delete_booking(booking_id: int):
     finally:
         await conn.close()
 
+# 6. Reset the booking table
 @api.delete("/api/v1/bookings")
 async def reset_booking():
     init_sql = os.getenv("INIT_SQL", "database/init-db/init.sql")
