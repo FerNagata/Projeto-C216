@@ -1,0 +1,760 @@
+{
+	"info": {
+		"_postman_id": "0f68c329-892b-4dcb-bd0a-7884542c0498",
+		"name": "C216-L1-PROJETO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38201665",
+		"_collection_link": "https://web.postman.co/workspace/C216-Workspace~67f55f2d-ca4d-4171-85a0-b832d06c4082/collection/38441935-0f68c329-892b-4dcb-bd0a-7884542c0498?action=share&source=collection_link&creator=38201665"
+	},
+	"item": [
+		{
+			"name": "ACCOMMODATION",
+			"item": [
+				{
+					"name": "Listar todas as Acomodações",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should be a list\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/accommodations",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"accommodations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Acomodação pelo ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should contain book details\", function () {",
+									"    pm.expect(pm.response.json()).to.have.property('category');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/accommodations/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"accommodations",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar todas as Categorias",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response should be an array of strings\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.be.an(\"array\");",
+									"    pm.expect(responseJson).to.have.length.greaterThan(0); ",
+									"    responseJson.forEach(category => {",
+									"        pm.expect(category).to.be.a(\"string\");",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response contains expected categories\", function () {",
+									"    const expectedCategories = [\"cidade\", \"praia\"];",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    expectedCategories.forEach(expected => {",
+									"        pm.expect(responseJson).to.include(expected);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/accommodations/categories/all",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"accommodations",
+								"categories",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listas Locação de uma Categoria Específica",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response should be an array of accommodations\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.be.an(\"array\");",
+									"    pm.expect(responseJson).to.have.length.greaterThan(0);",
+									"",
+									"    responseJson.forEach(accommodation => {",
+									"        pm.expect(accommodation).to.be.an(\"object\");",
+									"        pm.expect(accommodation).to.have.property(\"category\");",
+									"        pm.expect(accommodation).to.have.property(\"city\");",
+									"        pm.expect(accommodation).to.have.property(\"address\");",
+									"        pm.expect(accommodation).to.have.property(\"price_per_night\");",
+									"        pm.expect(accommodation).to.have.property(\"owner\");",
+									"        pm.expect(accommodation).to.have.property(\"id\");",
+									"",
+									"        pm.expect(accommodation.category).to.be.a(\"string\");",
+									"        pm.expect(accommodation.city).to.be.a(\"string\");",
+									"        pm.expect(accommodation.address).to.be.a(\"string\");",
+									"        pm.expect(accommodation.price_per_night).to.be.a(\"number\");",
+									"        pm.expect(accommodation.owner).to.be.a(\"string\");",
+									"        pm.expect(accommodation.id).to.be.a(\"number\");",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response matches expected accommodation data\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    const expectedAccommodation = {",
+									"        category: \"cidade\",",
+									"        city: \"São Paulo\",",
+									"        address: \"Av. Brasil - 1234\",",
+									"        price_per_night: 2300,",
+									"        owner: \"Brad Patt\",",
+									"        id: 2",
+									"    };",
+									"",
+									"    const matchingAccommodation = responseJson.find(accommodation =>",
+									"        accommodation.id === expectedAccommodation.id",
+									"    );",
+									"",
+									"    pm.expect(matchingAccommodation).to.exist; ",
+									"    pm.expect(matchingAccommodation).to.deep.include(expectedAccommodation); ",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/accommodations/category/cidade",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"accommodations",
+								"category",
+								"cidade"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar uma Acomodação",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"pm.test(\"Response should contain confirmation message\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Acomodação adicionada com sucesso!');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category\": \"beach\",\n  \"city\": \"Búzios\",\n  \"address\": \"Av. Brasil - 1557\",\n  \"price_per_night\": 1.4,\n  \"owner\": \"Zeca Pagodinho\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/accommodations",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"accommodations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar uma Acomodação",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should confirm update\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Acomodação atualizada com sucesso!');",
+									"});",
+									"",
+									"// Validar se o livro foi atualizado corretamente",
+									"pm.sendRequest(\"http://127.0.0.1:8000/api/v1/accommodations/3\", function (err, res) {",
+									"    pm.test(\"Os atributos da acomodação foram atualizados\", function () {",
+									"        let accommodations = res.json();",
+									"        pm.expect(accommodations.category).to.eql(\"beach\");",
+									"        pm.expect(accommodations.city).to.eql(\"Brazopolis\");",
+									"        pm.expect(accommodations.address).to.eql(\"Av. Agenor Braz de Noronha - 1557\");",
+									"        pm.expect(accommodations.price_per_night).to.eql(1.5);",
+									"        pm.expect(accommodations.owner).to.eql(\"Mineiro\");",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category\": \"beach\",\n  \"city\": \"Brazopolis\",\n  \"address\": \"Av. Agenor Braz de Noronha - 1557\",\n  \"price_per_night\": 1.5,\n  \"owner\": \"Mineiro\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/accommodations/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"accommodations",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar uma Acomodação",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should confirm deletion\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Acomodação removida com sucesso!');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/accommodations/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"accommodations",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Todos as Acomodações (RESETAR BD)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should confirm deletion\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Banco de dados limpo com sucesso!');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/accommodations",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"accommodations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BOOKING",
+			"item": [
+				{
+					"name": "Listando todos os Bookings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should be a list\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});",
+									"",
+									"pm.test(\"Each item should have 'checkin' and 'checkout' fields\", function () {",
+									"    var responseJson = pm.response.json();",
+									"    ",
+									"    // Verifica se cada item da lista possui os campos 'checkin' e 'checkout'",
+									"    responseJson.forEach(function(item) {",
+									"        pm.expect(item).to.have.property('id');",
+									"        pm.expect(item).to.have.property('name');",
+									"        pm.expect(item).to.have.property('accommodation_id');",
+									"        pm.expect(item).to.have.property('checkin');",
+									"        pm.expect(item).to.have.property('checkout');",
+									"        pm.expect(item).to.have.property('total_price');",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Booking pelo ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);  // Verifique se o código de status é 200",
+									"});",
+									"",
+									"pm.test(\"Response should contain booking details\", function () {",
+									"    let response = pm.response.json();",
+									"    pm.expect(response).to.have.property('name');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionando um Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"pm.test(\"Response should contain confirmation message\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Reserva criada com sucesso!');",
+									"});",
+									"// Teste para verificar o número de noites e total_price",
+									"pm.test(\"Total price is calculated correctly\", function () {",
+									"    const checkin = new Date(\"2024-12-20T10:30:00.000Z\");",
+									"    const checkout = new Date(\"2025-01-10T10:30:00.000Z\");",
+									"    const nights = (checkout - checkin) / (1000 * 60 * 60 * 24); // Calcula o número de noites",
+									"    const pricePerNight = 1300.0; // Exemplo de preço por noite",
+									"    const expectedTotalPrice = nights * pricePerNight; // Calcula o valor esperado",
+									"",
+									"    pm.expect(pm.response.json().total_price).to.eql(expectedTotalPrice); // Valida o valor do total_price",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"accommodation_id\": 1,\n  \"name\": \"Mary Kley\",\n  \"city\": \"Rio de Janeiro\",\n  \"checkin\": \"2024-12-20T10:30:00\",\n  \"checkout\": \"2025-01-10T10:30:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar um Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should confirm update\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Reserva atualizada com sucesso!');",
+									"});",
+									"",
+									"pm.sendRequest(\"http://127.0.0.1:8000/api/v1/bookings/1\", function (err, res) {",
+									"    pm.test(\"Os atributos da reserva foram atualizados\", function () {",
+									"        let bookings = res.json();",
+									"        pm.expect(bookings.name).to.eql(\"Claudio\");",
+									"        pm.expect(bookings.checkin).to.eql(\"2024-11-12T18:30:00\");",
+									"        pm.expect(bookings.checkout).to.eql(\"2024-11-15T18:30:00\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Claudio\",\n    \"checkin\": \"2024-11-12T18:30:00\",\n    \"checkout\": \"2024-11-15T18:30:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar um Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should confirm deletion\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Reserva cancelada com sucesso!');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Todas os Bookings (RESETAR BD)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response should confirm deletion\", function () {",
+									"    pm.expect(pm.response.json().message).to.eql('Banco de dados limpo com sucesso!');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/bookings",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

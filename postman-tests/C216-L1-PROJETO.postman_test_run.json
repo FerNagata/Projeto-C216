@@ -1,0 +1,576 @@
+{
+	"id": "c89ea8de-7a2a-4e90-88b6-13807e58928a",
+	"name": "C216-L1-PROJETO",
+	"timestamp": "2024-12-04T11:19:28.283Z",
+	"collection_id": "38441935-0f68c329-892b-4dcb-bd0a-7884542c0498",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 34,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2024-12-04T11:19:25.824Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "e159d4a3-a694-458f-8d23-3952111bc87d",
+			"name": "Listar todas as Acomodações",
+			"url": "http://127.0.0.1:8000/api/v1/accommodations",
+			"time": 71,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be a list": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be a list": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				71
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be a list": true
+				}
+			]
+		},
+		{
+			"id": "04c5e42e-57fc-4b15-af4f-680705e09e0c",
+			"name": "Buscar Acomodação pelo ID",
+			"url": "http://127.0.0.1:8000/api/v1/accommodations/3",
+			"time": 65,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should contain book details": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should contain book details": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				65
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should contain book details": true
+				}
+			]
+		},
+		{
+			"id": "a0bb5533-3efd-4e03-a770-021a696f9c08",
+			"name": "Listar todas as Categorias",
+			"url": "http://127.0.0.1:8000/api/v1/accommodations/categories/all",
+			"time": 111,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"200": true,
+				"Response should be an array of strings": true,
+				"Response contains expected categories": true
+			},
+			"testPassFailCounts": {
+				"200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be an array of strings": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains expected categories": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				111
+			],
+			"allTests": [
+				{
+					"200": true,
+					"Response should be an array of strings": true,
+					"Response contains expected categories": true
+				}
+			]
+		},
+		{
+			"id": "f5ac7bf9-5bc0-474a-9d52-d8fd3c5ca087",
+			"name": "Listas Locação de uma Categoria Específica",
+			"url": "http://127.0.0.1:8000/api/v1/accommodations/category/cidade",
+			"time": 99,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be an array of accommodations": true,
+				"Response matches expected accommodation data": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be an array of accommodations": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response matches expected accommodation data": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				99
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be an array of accommodations": true,
+					"Response matches expected accommodation data": true
+				}
+			]
+		},
+		{
+			"id": "7a6add15-b712-4e7a-ad8a-ea78ce18b1a8",
+			"name": "Adicionar uma Acomodação",
+			"url": "http://127.0.0.1:8000/api/v1/accommodations",
+			"time": 102,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response should contain confirmation message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should contain confirmation message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				102
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response should contain confirmation message": true
+				}
+			]
+		},
+		{
+			"id": "367c8cae-d493-402d-881b-a08f375cc7cd",
+			"name": "Atualizar uma Acomodação",
+			"url": "http://127.0.0.1:8000/api/v1/accommodations/3",
+			"time": 98,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm update": true,
+				"Os atributos da acomodação foram atualizados": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm update": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Os atributos da acomodação foram atualizados": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				98
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm update": true,
+					"Os atributos da acomodação foram atualizados": true
+				}
+			]
+		},
+		{
+			"id": "b510c941-db9f-4023-946c-d0e0fdc9aa63",
+			"name": "Deletar uma Acomodação",
+			"url": "http://127.0.0.1:8000/api/v1/accommodations/3",
+			"time": 113,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm deletion": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm deletion": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				113
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm deletion": true
+				}
+			]
+		},
+		{
+			"id": "005debba-d510-45c9-806d-f9e35eaced9c",
+			"name": "Remover Todos as Acomodações (RESETAR BD)",
+			"url": "http://127.0.0.1:8000/api/v1/accommodations",
+			"time": 115,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm deletion": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm deletion": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				115
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm deletion": true
+				}
+			]
+		},
+		{
+			"id": "cf99e678-6bfc-4050-a916-08c5d79591e3",
+			"name": "Listando todos os Bookings",
+			"url": "http://127.0.0.1:8000/api/v1/bookings",
+			"time": 95,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be a list": true,
+				"Each item should have 'checkin' and 'checkout' fields": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be a list": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each item should have 'checkin' and 'checkout' fields": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				95
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be a list": true,
+					"Each item should have 'checkin' and 'checkout' fields": true
+				}
+			]
+		},
+		{
+			"id": "1d196e81-8c1a-4949-8ae0-f6631bb99256",
+			"name": "Buscar Booking pelo ID",
+			"url": "http://127.0.0.1:8000/api/v1/bookings/1",
+			"time": 92,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should contain booking details": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should contain booking details": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				92
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should contain booking details": true
+				}
+			]
+		},
+		{
+			"id": "4f65e865-5f6b-4eb8-9cfa-4d33c542fdeb",
+			"name": "Adicionando um Booking",
+			"url": "http://127.0.0.1:8000/api/v1/bookings",
+			"time": 107,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response should contain confirmation message": true,
+				"Total price is calculated correctly": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should contain confirmation message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Total price is calculated correctly": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				107
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response should contain confirmation message": true,
+					"Total price is calculated correctly": true
+				}
+			]
+		},
+		{
+			"id": "34ebf470-4159-4f8c-9c74-ff40136067ab",
+			"name": "Atualizar um Booking",
+			"url": "http://127.0.0.1:8000/api/v1/bookings/1",
+			"time": 113,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm update": true,
+				"Os atributos da reserva foram atualizados": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm update": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Os atributos da reserva foram atualizados": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				113
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm update": true,
+					"Os atributos da reserva foram atualizados": true
+				}
+			]
+		},
+		{
+			"id": "c24241d2-372e-484a-97bb-ceada57dd30a",
+			"name": "Deletar um Booking",
+			"url": "http://127.0.0.1:8000/api/v1/bookings/2",
+			"time": 107,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm deletion": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm deletion": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				107
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm deletion": true
+				}
+			]
+		},
+		{
+			"id": "fe8d6db7-9c4d-4b2e-8575-af3212355198",
+			"name": "Remover Todas os Bookings (RESETAR BD)",
+			"url": "http://127.0.0.1:8000/api/v1/bookings",
+			"time": 124,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm deletion": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm deletion": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				124
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm deletion": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1412,
+	"collection": {
+		"requests": [
+			{
+				"id": "e159d4a3-a694-458f-8d23-3952111bc87d",
+				"method": "GET"
+			},
+			{
+				"id": "04c5e42e-57fc-4b15-af4f-680705e09e0c",
+				"method": "GET"
+			},
+			{
+				"id": "a0bb5533-3efd-4e03-a770-021a696f9c08",
+				"method": "GET"
+			},
+			{
+				"id": "f5ac7bf9-5bc0-474a-9d52-d8fd3c5ca087",
+				"method": "GET"
+			},
+			{
+				"id": "7a6add15-b712-4e7a-ad8a-ea78ce18b1a8",
+				"method": "POST"
+			},
+			{
+				"id": "367c8cae-d493-402d-881b-a08f375cc7cd",
+				"method": "PATCH"
+			},
+			{
+				"id": "b510c941-db9f-4023-946c-d0e0fdc9aa63",
+				"method": "DELETE"
+			},
+			{
+				"id": "005debba-d510-45c9-806d-f9e35eaced9c",
+				"method": "DELETE"
+			},
+			{
+				"id": "cf99e678-6bfc-4050-a916-08c5d79591e3",
+				"method": "GET"
+			},
+			{
+				"id": "1d196e81-8c1a-4949-8ae0-f6631bb99256",
+				"method": "GET"
+			},
+			{
+				"id": "4f65e865-5f6b-4eb8-9cfa-4d33c542fdeb",
+				"method": "POST"
+			},
+			{
+				"id": "34ebf470-4159-4f8c-9c74-ff40136067ab",
+				"method": "PATCH"
+			},
+			{
+				"id": "c24241d2-372e-484a-97bb-ceada57dd30a",
+				"method": "DELETE"
+			},
+			{
+				"id": "fe8d6db7-9c4d-4b2e-8575-af3212355198",
+				"method": "DELETE"
+			}
+		]
+	}
+}
